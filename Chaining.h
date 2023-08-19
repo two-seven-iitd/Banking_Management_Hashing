@@ -16,14 +16,7 @@ public:
     int hash(std::string id) override;
     
 private:
-    struct Node {
-        std::string id;
-        int balance;
-        Node* next;
-        Node(std::string _id, int _balance) : id(_id), balance(_balance), next(nullptr) {}
-    };
     
-    std::vector<Node*> hashTable;
     // Other data members and functions specific to Chaining
 };
 
