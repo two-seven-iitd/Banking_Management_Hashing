@@ -1,6 +1,8 @@
 #include "Chaining.h"
 #include "LinearProbing.h"
 #include "QuadraticProbing.h"
+#include "CubicProbing.h"
+#include "Comp.h"
 #include <cassert>
 
 void testDatabase(BaseClass *db) {
@@ -36,6 +38,8 @@ int main() {
     Chaining chainingDB;
     LinearProbing linearProbingDB;
     QuadraticProbing quadraticProbingDB;
+    CubicProbing cubicProbingDB;
+    Comp compDB;
 
     std::cout << "Testing Chaining:" << std::endl;
     testDatabase(&chainingDB);
@@ -46,5 +50,10 @@ int main() {
     std::cout << "\nTesting Quadratic Probing:" << std::endl;
     testDatabase(&quadraticProbingDB);
 
+    std::cout << "\nTesting Cubic Probing:" << std::endl;
+    testDatabase(&cubicProbingDB);
+
+    std::cout << "\nTesting Comp:" << std::endl;
+    testDatabase(&compDB);
     return 0;
 }

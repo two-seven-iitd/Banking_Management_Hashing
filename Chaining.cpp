@@ -33,6 +33,3 @@ int Chaining::hash(std::string id) {
     return 0; // Placeholder return value
 }
 
-void Chaining::chaining(std::string id, int count) {
-    // IMPLEMENT YOUR CODE HERE
-}

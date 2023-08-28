@@ -13,8 +13,7 @@ public:
     bool doesExist(std::string id) override;
     int databaseSize() override;
     int hash(std::string id) override;
-    void quadraticProbing(std::string id, int count);
-    
+
 private:
     // Other data members and functions specific to Quadratic Probing
 };

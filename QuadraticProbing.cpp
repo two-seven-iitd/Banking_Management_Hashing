@@ -33,6 +33,3 @@ int QuadraticProbing::hash(std::string id) {
     return 0; // Placeholder return value
 }
 
-void QuadraticProbing::quadraticProbing(std::string id, int count) {
-    // IMPLEMENT YOUR CODE HERE
-}

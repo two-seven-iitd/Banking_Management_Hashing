@@ -32,7 +32,3 @@ int CubicProbing::hash(std::string id) {
     // IMPLEMENT YOUR CODE HERE
     return 0; // Placeholder return value
 }
-
-void CubicProbing::cubicProbing(std::string id, int count) {
-    // IMPLEMENT YOUR CODE HERE
-}
