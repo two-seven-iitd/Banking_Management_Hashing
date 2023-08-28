@@ -11,6 +11,7 @@ public:
     int getBalance(std::string id) override;
     void addTransaction(std::string id, int count) override;
     bool doesExist(std::string id) override;
+    bool deleteAccount(std::string id) override;
     int databaseSize() override;
     int hash(std::string id) override;
     

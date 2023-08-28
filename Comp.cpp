@@ -23,6 +23,10 @@ bool Comp::doesExist(std::string id) {
     return false; // Placeholder return value
 }
 
+bool Comp::deleteAccount(std::string id) {
+    // IMPLEMENT YOUR CODE HERE
+    return false; // Placeholder return value
+}
 int Comp::databaseSize() {
     // IMPLEMENT YOUR CODE HERE
     return 0; // Placeholder return value

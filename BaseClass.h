@@ -15,6 +15,7 @@ public:
     virtual int getBalance(std::string id) = 0;
     virtual void addTransaction(std::string id, int count) = 0;
     virtual bool doesExist(std::string id) = 0;
+    virtual bool deleteAccount(std::string id) = 0;
     virtual int databaseSize() = 0;
     virtual int hash(std::string id) = 0;
 

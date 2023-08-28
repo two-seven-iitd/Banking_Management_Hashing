@@ -23,6 +23,10 @@ bool CubicProbing::doesExist(std::string id) {
     return false; // Placeholder return value
 }
 
+bool CubicProbing::deleteAccount(std::string id) {
+    // IMPLEMENT YOUR CODE HERE
+    return false; // Placeholder return value
+}
 int CubicProbing::databaseSize() {
     // IMPLEMENT YOUR CODE HERE
     return 0; // Placeholder return value
