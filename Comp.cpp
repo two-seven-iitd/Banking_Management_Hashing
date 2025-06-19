@@ -1,42 +1,120 @@
 #include "Comp.h"
 
+constexpr int prime = 31;
+constexpr int mod = 100003;
+
+Comp::Comp() {
+    database_size = 0;
+    bankStorage1d.resize(mod);
+    for (int i = 0; i < mod; i++) {
+        bankStorage1d[i].id = "NULL";
+        bankStorage1d[i].balance = 0;
+    }
+}
+
 void Comp::createAccount(std::string id, int count) {
-    // IMPLEMENT YOUR CODE HERE
+    int original_hash = hash(id);
+    for (int i = 0; i < mod; ++i) {
+        int index = (original_hash + i * i * i) % mod;
+        if (bankStorage1d[index].id == id) return;
+
+        if (bankStorage1d[index].id == "NULL" || bankStorage1d[index].id == "DEL") {
+            bankStorage1d[index].id = id;
+            bankStorage1d[index].balance = count;
+            database_size++;
+            return;
+        }
+    }
 }
 
 std::vector<int> Comp::getTopK(int k) {
-    // IMPLEMENT YOUR CODE HERE
-    return std::vector<int>(); // Placeholder return value
+    std::vector<int> topBalances;
+    if (k <= 0) return topBalances;
+
+    std::vector<int> indices;
+    for (int i = 0; i < mod; ++i) {
+        if (bankStorage1d[i].id != "NULL" && bankStorage1d[i].id != "DEL") {
+            indices.push_back(i);
+        }
+    }
+
+    for (int i = 0; i < k && i < indices.size(); ++i) {
+        int maxIndex = i;
+        for (int j = i + 1; j < indices.size(); ++j) {
+            if (bankStorage1d[indices[j]].balance > bankStorage1d[indices[maxIndex]].balance) {
+                maxIndex = j;
+            }
+        }
+        int temp = indices[i];
+        indices[i] = indices[maxIndex];
+        indices[maxIndex] = temp;
+        topBalances.push_back(bankStorage1d[indices[i]].balance);
+    }
+    return topBalances;
 }
 
 int Comp::getBalance(std::string id) {
-    // IMPLEMENT YOUR CODE HERE
-    return 0; // Placeholder return value
+    int original_hash = hash(id);
+    for (int i = 0; i < mod; ++i) {
+        int index = (original_hash + i * i * i) % mod;
+        if (bankStorage1d[index].id == "NULL") break;
+        if (bankStorage1d[index].id == id) return bankStorage1d[index].balance;
+    }
+    return -1;
 }
 
 void Comp::addTransaction(std::string id, int count) {
-    // IMPLEMENT YOUR CODE HERE
+    int original_hash = hash(id);
+    for (int i = 0; i < mod; ++i) {
+        int index = (original_hash + i * i * i) % mod;
+
+        if (bankStorage1d[index].id == id) {
+            bankStorage1d[index].balance += count;
+            return;
+        }
+
+        if (bankStorage1d[index].id == "NULL" || bankStorage1d[index].id == "DEL") {
+            bankStorage1d[index].id = id;
+            bankStorage1d[index].balance = count;
+            database_size++;
+            return;
+        }
+    }
 }
 
 bool Comp::doesExist(std::string id) {
-    // IMPLEMENT YOUR CODE HERE
-    return false; // Placeholder return value
+    int original_hash = hash(id);
+    for (int i = 0; i < mod; ++i) {
+        int index = (original_hash + i * i * i) % mod;
+        if (bankStorage1d[index].id == "NULL") break;
+        if (bankStorage1d[index].id == id) return true;
+    }
+    return false;
 }
 
 bool Comp::deleteAccount(std::string id) {
-    // IMPLEMENT YOUR CODE HERE
-    return false; // Placeholder return value
+    int original_hash = hash(id);
+    for (int i = 0; i < mod; ++i) {
+        int index = (original_hash + i * i * i) % mod;
+        if (bankStorage1d[index].id == "NULL") break;
+        if (bankStorage1d[index].id == id) {
+            bankStorage1d[index].id = "DEL";
+            bankStorage1d[index].balance = 0;
+            database_size--;
+            return true;
+        }
+    }
+    return false;
 }
+
 int Comp::databaseSize() {
-    // IMPLEMENT YOUR CODE HERE
-    return 0; // Placeholder return value
+    return database_size;
 }
 
 int Comp::hash(std::string id) {
-    // IMPLEMENT YOUR CODE HERE
-    return 0; // Placeholder return value
+    long long sum = 0;
+    for (char c : id) {
+        sum = (sum * prime + c) % mod;
+    }
+    return (int)sum;
 }
-
-
-// Feel free to add any other helper functions you need
-// Good Luck!

@@ -4,8 +4,10 @@
 #include "BaseClass.h"
 #include <iostream>
 
+
 class LinearProbing : public BaseClass {
 public:
+    LinearProbing();
     void createAccount(std::string id, int count) override;
     std::vector<int> getTopK(int k) override;
     int getBalance(std::string id) override;
@@ -17,6 +19,8 @@ public:
     
 private:
     // Other data members and functions specific to Linear Probing
+    int database_size;
+    
 };
 
 #endif // LINEARPROBING_H

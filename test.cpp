@@ -4,11 +4,16 @@
 #include "CubicProbing.h"
 #include "Comp.h"
 #include <cassert>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <chrono> 
 
 void testDatabase(BaseClass *db) {
     db->createAccount("Alice", 1000);
     db->createAccount("Bob", 1500);
     db->createAccount("Charlie", 2000);
+    std::cout << "Size is: " << db->databaseSize() << std::endl;
 
     assert(db->getBalance("Alice") == 1000);
     assert(db->getBalance("Bob") == 1500);
@@ -28,11 +33,79 @@ void testDatabase(BaseClass *db) {
     assert(topBalances[1] == 1600);
 
     assert(db->databaseSize() == 3);
-
     assert(db->doesExist("Alice"));
     assert(!db->doesExist("Eve"));
 }
 
+void testHeavyOperations(BaseClass *db) {
+    const int N = 90000;
+    std::cout << "Starting heavy test..." << std::endl;
+
+    // Initial insertion
+    for (int i = 0; i < N; i++) {
+        db->createAccount("user" + std::to_string(i), i);
+    }
+    std::cout << "size is: " << db->databaseSize() << "\n";
+    assert(db->databaseSize() - 3 == N);
+
+    // Transactions
+    for (int i = 0; i < N; i++) {
+        db->addTransaction("user" + std::to_string(i), 1000);
+    }
+
+    // Check balances
+    for (int i = 0; i < 100; i++) {
+        int expected = i + 1000;
+        int actual = db->getBalance("user" + std::to_string(i));
+        assert(actual == expected);
+    }
+
+    // Existence
+    assert(db->doesExist("user89999"));
+    assert(!db->doesExist("non_existing_user"));
+
+    // getTopK correctness
+    std::vector<int> top = db->getTopK(10);
+    assert(top.size() == 10);
+    for (int i = 0; i < 9; i++) {
+        assert(top[i] >= top[i + 1]);
+    }
+
+    std::cout << "Heavy test passed for size: " << db->databaseSize() << std::endl;
+
+    // Now delete all entries
+    for (int i = 0; i < N; ++i) {
+        bool deleted = db->deleteAccount("user" + std::to_string(i));
+        assert(deleted); // Each delete must succeed
+    }
+    std::cout << "All accounts deleted. Size now: " << db->databaseSize() << "\n";
+    assert(db->databaseSize() == 3); // Only the original 3 from basic test remain
+
+    // Re-insert
+    for (int i = 0; i < N; ++i) {
+        db->createAccount("user" + std::to_string(i), i + 500);
+    }
+    std::cout << "Reinserted all accounts. Size now: " << db->databaseSize() << "\n";
+    assert(db->databaseSize() - 3 == N); // Confirm all were re-added
+}
+
+
+void runWithTiming(const std::string &name, BaseClass *db) {
+    std::cout << "Testing " << name << ":" << std::endl;
+
+    auto startBasic = std::chrono::high_resolution_clock::now();
+    testDatabase(db);
+    auto endBasic = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> basicTime = endBasic - startBasic;
+    std::cout << "Basic test took: " << basicTime.count() << " ms\n";
+
+    auto startHeavy = std::chrono::high_resolution_clock::now();
+    testHeavyOperations(db);
+    auto endHeavy = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> heavyTime = endHeavy - startHeavy;
+    std::cout << "Heavy test took: " << heavyTime.count() << " ms\n";
+    std::cout << "---------------------------\n";
+}
 
 int main() {
     Chaining chainingDB;
@@ -41,19 +114,11 @@ int main() {
     CubicProbing cubicProbingDB;
     Comp compDB;
 
-    std::cout << "Testing Chaining:" << std::endl;
-    testDatabase(&chainingDB);
+    runWithTiming("Chaining", &chainingDB);
+    runWithTiming("Linear Probing", &linearProbingDB);
+    runWithTiming("Quadratic Probing", &quadraticProbingDB);
+    runWithTiming("Cubic Probing", &cubicProbingDB);
+    runWithTiming("Comp", &compDB);
 
-    std::cout << "\nTesting Linear Probing:" << std::endl;
-    testDatabase(&linearProbingDB);
-
-    std::cout << "\nTesting Quadratic Probing:" << std::endl;
-    testDatabase(&quadraticProbingDB);
-
-    std::cout << "\nTesting Cubic Probing:" << std::endl;
-    testDatabase(&cubicProbingDB);
-
-    std::cout << "\nTesting Comp:" << std::endl;
-    testDatabase(&compDB);
     return 0;
 }

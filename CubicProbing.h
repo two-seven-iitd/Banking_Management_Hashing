@@ -4,8 +4,10 @@
 #include "BaseClass.h"
 #include <iostream>
 
+
 class CubicProbing : public BaseClass {
 public:
+    CubicProbing();
     void createAccount(std::string id, int count) override;
     std::vector<int> getTopK(int k) override;
     int getBalance(std::string id) override;
@@ -16,6 +18,7 @@ public:
     int hash(std::string id) override;
     
 private:
+    int database_size = 0;
     // Other data members and functions specific to Quadratic Probing
 };
 

@@ -1,11 +1,17 @@
 #include "Chaining.h"
-// const int prime = 31;              
-// const int mod = 1000003;         
+
+const int prime = 31;              
+const int mod = 100003;         
 void Chaining::createAccount(std::string id, int count) {
     // IMPLEMENT YOUR CODE HERE
     int token = hash(id);
-    while(databaseSize()<=token) {
+    while(bankStorage2d.size()<=token) {
         bankStorage2d.push_back({});
+    }
+    for (int it = 0; it < bankStorage2d[token].size(); it++) {
+        if (bankStorage2d[token][it].id == id) {
+            return;  // Already exist
+        }
     }
     Account account;
     account.id = id;    
@@ -60,7 +66,7 @@ std::vector<int> Chaining::getTopK(int k) {
 int Chaining::getBalance(std::string id) {
     // IMPLEMENT YOUR CODE HERE
     int token = hash(id);
-    if(token>=databaseSize()) {
+    if(token>=bankStorage2d.size()) {
         return -1;
     }
     for(int it = 0; it<bankStorage2d[token].size(); it++) {
@@ -74,7 +80,7 @@ int Chaining::getBalance(std::string id) {
 void Chaining::addTransaction(std::string id, int count) {
     // IMPLEMENT YOUR CODE HERE
     int token = hash(id);
-    if(token>=databaseSize()) {
+    if(token>=bankStorage2d.size()) {
         return;
     }
     for(int it = 0; it<bankStorage2d[token].size(); it++) {
@@ -88,7 +94,7 @@ void Chaining::addTransaction(std::string id, int count) {
 bool Chaining::doesExist(std::string id) {
     // IMPLEMENT YOUR CODE HERE
     int token = hash(id);
-    if(token>=databaseSize()) {
+    if(token>=bankStorage2d.size()) {
         return false;
     }
     for(int it = 0; it<bankStorage2d[token].size(); it++) {
@@ -103,7 +109,7 @@ bool Chaining::doesExist(std::string id) {
 bool Chaining::deleteAccount(std::string id) {
     // IMPLEMENT YOUR CODE HERE
     int token = hash(id);
-    if(token>=databaseSize()) {
+    if(token>=bankStorage2d.size()) {
         return false;
     }
     for(int it = 0; it<bankStorage2d[token].size(); it++) {

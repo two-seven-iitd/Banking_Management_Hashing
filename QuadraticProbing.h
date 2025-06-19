@@ -6,6 +6,7 @@
 
 class QuadraticProbing : public BaseClass {
 public:
+    QuadraticProbing();
     void createAccount(std::string id, int count) override;
     std::vector<int> getTopK(int k) override;
     int getBalance(std::string id) override;
@@ -16,6 +17,7 @@ public:
     int hash(std::string id) override;
 
 private:
+    int database_size;
     // Other data members and functions specific to Quadratic Probing
 };
 
