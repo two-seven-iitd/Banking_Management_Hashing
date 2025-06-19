@@ -4,6 +4,8 @@
 #include "BaseClass.h"
 #include <iostream>
 #include <vector>
+constexpr int prime = 31;
+constexpr int mod = 1000003;
 
 class Chaining : public BaseClass {
 public:
