@@ -14,7 +14,7 @@ Comp::Comp() {
 
 void Comp::createAccount(std::string id, int count) {
     int original_hash = hash(id);
-    for (int i = 0; i < mod; ++i) {
+    for (long long i = 0; i < mod; ++i) {
         int index = (original_hash + i * i * i) % mod;
         if (bankStorage1d[index].id == id) return;
 
@@ -55,7 +55,7 @@ std::vector<int> Comp::getTopK(int k) {
 
 int Comp::getBalance(std::string id) {
     int original_hash = hash(id);
-    for (int i = 0; i < mod; ++i) {
+    for (long long i = 0; i < mod; ++i) {
         int index = (original_hash + i * i * i) % mod;
         if (bankStorage1d[index].id == "NULL") break;
         if (bankStorage1d[index].id == id) return bankStorage1d[index].balance;
@@ -65,7 +65,7 @@ int Comp::getBalance(std::string id) {
 
 void Comp::addTransaction(std::string id, int count) {
     int original_hash = hash(id);
-    for (int i = 0; i < mod; ++i) {
+    for (long long i = 0; i < mod; ++i) {
         int index = (original_hash + i * i * i) % mod;
 
         if (bankStorage1d[index].id == id) {
@@ -84,7 +84,7 @@ void Comp::addTransaction(std::string id, int count) {
 
 bool Comp::doesExist(std::string id) {
     int original_hash = hash(id);
-    for (int i = 0; i < mod; ++i) {
+    for (long long i = 0; i < mod; ++i) {
         int index = (original_hash + i * i * i) % mod;
         if (bankStorage1d[index].id == "NULL") break;
         if (bankStorage1d[index].id == id) return true;
@@ -94,7 +94,7 @@ bool Comp::doesExist(std::string id) {
 
 bool Comp::deleteAccount(std::string id) {
     int original_hash = hash(id);
-    for (int i = 0; i < mod; ++i) {
+    for (long long i = 0; i < mod; ++i) {
         int index = (original_hash + i * i * i) % mod;
         if (bankStorage1d[index].id == "NULL") break;
         if (bankStorage1d[index].id == id) {

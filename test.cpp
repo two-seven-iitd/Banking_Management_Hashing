@@ -54,7 +54,7 @@ void testHeavyOperations(BaseClass *db) {
     }
 
     // Check balances
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < N; i++) {
         int expected = i + 1000;
         int actual = db->getBalance("user" + std::to_string(i));
         assert(actual == expected);
